@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaTech Counsel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1 class="headline"><center>Move fast, scale smart, stay connected.</center></h1>
+  <p>At AlphaTech Counsel, we help emerging technology companies make smart legal decisions from formation to exit -- through a relationship-driven model that flexes to fit the moment.</p>
+  <p>We're selective about who we work with and we are not for everybody -- because the right fit drives better outcomes. Our clients aren't looking to check a legal box or the lowest cost alternative. They come to us to think strategically, move fast, and get it right the first time.</p>
+  <p>Our fixed-fee and subscription offerings tackle your legal questions, routine legal needs, and what-ifs -- setting the stage for the big moves and deals ahead.</p>
+
+  <section class="offerings-grid" aria-label="Our Offerings">
+    <div class="offering-card">
+      <img class="offering-image" src="../Pictures/Hero Section/Option 1.png" alt="Fixed-Fee Projects">
+      <h2>Fixed-Fee Projects</h2>
+      <p>
+        Fixed fee legal solutions for emerging technology companies, allowing you to focus on growth while we handle one-time legal projects seamlessly:
+      <a href="#" class="bubble-link" data-bubble="Details: Incorporation services include entity selection, founder equity setup, and state filings.">incorporation</a>, 
+      <a href="#" class="bubble-link" data-bubble="Details: Equity plans include board consents, stock option plans, grant templates.">equity plans</a>, 
+      <a href="#" class="bubble-link" data-bubble="Details: We prepare compliant employee agreements tailored to your company stage and location.">employee agreements</a>, and 
+      <a href="#" class="bubble-link" data-bubble="Details: Convertible debt and SAFE financing packages, including forms and filings.">convertible debt/SAFE financings</a> -- scoped and predictable.
+      </p>
+    </div>
+
+    <div class="offering-card">
+      <img class="offering-image" src="../Pictures/Hero Section/Option 2.png" alt="Subscription Counsel">
+      <h2>Subscription Counsel</h2>
+      <p>
+        Your legal partner on speed dial. Regular strategy calls, Q&amp;A support, identified routine matters, and the occasional project -- all for one flat quarterly rate. Subscriptions tailored to
+      <a href="#" class="bubble-link" data-bubble="For early-stage founders building their first legal infrastructure and hiring their first team.">startups</a>, 
+      <a href="#" class="bubble-link" data-bubble="For growing companies navigating hiring, commercial deals, and board activity.">scaling companies</a>, and 
+      <a href="#" class="bubble-link" data-bubble="For teams actively managing commercial contracts and investor diligence.">commercial contracting teams</a>.
+      </p>
+    </div>
+
+    <div class="offering-card">
+      <img class="offering-image" src="../Pictures/Hero Section/Option 3.png" alt="Signature Deals">
+      <h2>Signature Deals</h2>
+      <p>When you're navigating a major transaction -- a priced round financing, acquisition, strategic partnership, joint development, or company sale -- we bring experience, judgment, and deal leadership to the table to help get deals done.</p>
+    </div>
+
+    <div class="offering-card">
+      <img class="offering-image" src="../Pictures/Hero Section/Option 4.png" alt="Custom Hourly Support">
+      <h2>Custom Hourly Support</h2>
+      <p>When scope or pace requires flexibility, we offer traditional hourly arrangements. Many of our clients begin here and transition into our structured offerings.</p>
+    </div>
+  </section>
+  
+  <script>
+    (() => {
+      const ACTIVE_CLASS = 'thought-bubble-active';
+      let openBubble = null;
+      let openTarget = null;
+
+      function closeBubble() {
+        if (openBubble) {
+          openBubble.remove();
+          openBubble = null;
+          if (openTarget) {
+            openTarget.classList.remove(ACTIVE_CLASS);
+            openTarget = null;
+          }
+          document.removeEventListener('keydown', onKeyDown);
+          window.removeEventListener('scroll', closeBubble, true);
+          window.removeEventListener('resize', closeBubble, true);
+        }
+      }
+
+      function onKeyDown(e) {
+        if (e.key === 'Escape') closeBubble();
+      }
+
+      function positionBubble(bubble, target) {
+        const rect = target.getBoundingClientRect();
+        const bubbleRect = bubble.getBoundingClientRect();
+        const viewportW = document.documentElement.clientWidth;
+        const viewportH = document.documentElement.clientHeight;
+        let top = window.scrollY + rect.bottom + 8;
+        let placeAbove = false;
+        if (top + bubbleRect.height > window.scrollY + viewportH - 8) {
+          placeAbove = true;
+          top = window.scrollY + rect.top - bubbleRect.height - 8;
+        }
+        top = Math.max(window.scrollY + 8, Math.min(top, window.scrollY + viewportH - bubbleRect.height - 8));
+
+        let left = window.scrollX + rect.left + (rect.width - bubbleRect.width) / 2;
+        const maxLeft = window.scrollX + viewportW - bubbleRect.width - 8;
+        left = Math.max(window.scrollX + 8, Math.min(left, maxLeft));
+
+        bubble.style.top = `${top}px`;
+        bubble.style.left = `${left}px`;
+        bubble.setAttribute('data-placement', placeAbove ? 'top' : 'bottom');
+      }
+
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('.bubble-link[data-bubble]');
+        if (link) {
+          e.preventDefault();
+          if (openTarget === link) {
+            closeBubble();
+            return;
+          }
+          closeBubble();
+
+          const bubble = document.createElement('div');
+          bubble.className = 'thought-bubble';
+          bubble.textContent = link.dataset.bubble || '';
+
+          document.body.appendChild(bubble);
+          requestAnimationFrame(() => positionBubble(bubble, link));
+
+          openBubble = bubble;
+          openTarget = link;
+          link.classList.add(ACTIVE_CLASS);
+
+          document.addEventListener('keydown', onKeyDown);
+          window.addEventListener('scroll', closeBubble, true);
+          window.addEventListener('resize', closeBubble, true);
+          const onDocClick = (ev) => {
+            if (!bubble.contains(ev.target) && ev.target !== link) {
+              document.removeEventListener('click', onDocClick, true);
+              closeBubble();
+            }
+          };
+          document.addEventListener('click', onDocClick, true);
+        }
+      });
+    })();
+  </script>
+ 
+  <div class="cta">
+   <hr>
+    <h2><center><p>You want to scale? We get shit done.</p></center></h2>
+   </div>
+  <center><p>If this is how you work, let's talk. </p></center>
+  <hr>
+ 
+  <center><a href="/contact" class="cta-button">Start a Conversation [or web form]</a></center>
+
+ 
+<div id="aitopia-chat-bubble" class="aitopia-chat-bubble" style="display:none;">
+  <div class="aitopia-chat-header" id="aitopia-chat-header">
+    <svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" viewBox="0 0 125 121.7" overflow="visible" aria-hidden="true">
+      <circle fill="#01a77d" cx="63.4" cy="61.2" r="57.8"></circle>
+      <g fill="#fff">
+        <path d="M46.9 60.5h-.4c-1.9-.2-3.3-1.9-3.1-3.8.6-6.3 4.5-38 17.3-41.2 8.2-2 14.4 7.5 16.5 10.6 1.1 1.6.6 3.8-1 4.9s-3.8.6-4.9-1c-3.5-5.3-6.9-8.2-9-7.7-4.2 1-10 14.8-12 35.1-.2 1.7-1.7 3.1-3.4 3.1zm51.9-4.9c-.5 0-1-.1-1.4-.3-1.8-.8-2.6-2.9-1.8-4.6 2.6-5.8 3.2-10.2 1.7-11.7-3.1-3-17.8-.6-36.1 8.6-1.7.9-3.8.2-4.7-1.6-.9-1.7-.2-3.8 1.6-4.7.3-.2 8.3-4.1 17.4-7.1 13.4-4.5 22.2-4.5 26.7-.2 6.1 5.8 1.4 16.2-.1 19.6-.7 1.3-2 2-3.3 2zM88.2 89.5c-1.8 0-3.3-1.3-3.5-3.1-.2-1.9 1.1-3.7 3.1-3.9 6.3-.7 10.4-2.5 10.9-4.6 1-4.2-8.7-15.6-25.9-26.6-1.6-1-2.1-3.2-1.1-4.8s3.2-2.1 4.8-1.1c.3.2 7.8 5 15.1 11.3 10.7 9.3 15.3 16.7 13.9 22.8-1.9 8.2-13.2 9.5-16.9 10h-.4zm-25.9 18.1c-7.2 0-12.4-8.3-14.2-11.2-1-1.6-.5-3.8 1.1-4.8s3.8-.5 4.8 1.1c3.4 5.4 6.7 8.3 8.8 7.9 4.2-.9 10.3-14.5 12.9-34.8.2-1.9 2-3.3 3.9-3 1.9.2 3.3 2 3 3.9-.8 6.3-5.4 37.9-18.4 40.7-.5.1-1.2.2-1.9.2zm-25-18.1c-5.5 0-9.4-1.3-11.8-4-5.6-6.3-.1-16.3 1.6-19.5.9-1.7 3.1-2.3 4.7-1.4 1.7.9 2.3 3.1 1.4 4.7-3.1 5.6-4 9.9-2.6 11.5 2.9 3.2 17.7 1.9 36.7-5.7a3.57 3.57 0 0 1 4.6 1.9 3.57 3.57 0 0 1-1.9 4.6c-.3.1-8.6 3.5-17.9 5.8-5.9 1.4-10.8 2.1-14.8 2.1zm16.5-12.6c-.6 0-1.2-.2-1.8-.5-.3-.2-7.9-4.8-15.4-10.8-11-8.9-15.8-16.2-14.6-22.3 1.6-8.2 12.9-9.9 16.6-10.5 1.9-.3 3.7 1 4 2.9s-1 3.7-2.9 4c-6.3.9-10.3 2.8-10.7 4.9-1 4.3 9 15.3 26.6 25.8 1.7 1 2.2 3.1 1.2 4.8-.7 1.1-1.8 1.7-3 1.7z"></path>
+        <circle cx="63.8" cy="60.5" r="8.4"></circle>
+      </g>
+    </svg>
+    <span style="font-weight:600;font-size:1.1rem;">AITOPIA Chat</span>
+    <button class="aitopia-chat-close" id="aitopia-chat-close" title="Close" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="aitopia-chat-content">
+    <div style="color:#333;">Hello, how can I help you today?</div>
+  </div>
+</div>
+<button id="aitopia-launcher" type="button" class="aitopia-launcher" aria-controls="aitopia-chat-bubble" aria-expanded="false" title="Chat with AITOPIA" aria-label="Open AITOPIA chat">
+  <svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" viewBox="0 0 125 121.7" overflow="visible" aria-hidden="true">
+    <circle fill="#01a77d" cx="63.4" cy="61.2" r="57.8"></circle>
+    <g fill="#fff">
+      <path d="M46.9 60.5h-.4c-1.9-.2-3.3-1.9-3.1-3.8.6-6.3 4.5-38 17.3-41.2 8.2-2 14.4 7.5 16.5 10.6 1.1 1.6.6 3.8-1 4.9s-3.8.6-4.9-1c-3.5-5.3-6.9-8.2-9-7.7-4.2 1-10 14.8-12 35.1-.2 1.7-1.7 3.1-3.4 3.1zm51.9-4.9c-.5 0-1-.1-1.4-.3-1.8-.8-2.6-2.9-1.8-4.6 2.6-5.8 3.2-10.2 1.7-11.7-3.1-3-17.8-.6-36.1 8.6-1.7.9-3.8.2-4.7-1.6-.9-1.7-.2-3.8 1.6-4.7.3-.2 8.3-4.1 17.4-7.1 13.4-4.5 22.2-4.5 26.7-.2 6.1 5.8 1.4 16.2-.1 19.6-.7 1.3-2 2-3.3 2zM88.2 89.5c-1.8 0-3.3-1.3-3.5-3.1-.2-1.9 1.1-3.7 3.1-3.9 6.3-.7 10.4-2.5 10.9-4.6 1-4.2-8.7-15.6-25.9-26.6-1.6-1-2.1-3.2-1.1-4.8s3.2-2.1 4.8-1.1c.3.2 7.8 5 15.1 11.3 10.7 9.3 15.3 16.7 13.9 22.8-1.9 8.2-13.2 9.5-16.9 10h-.4zm-25.9 18.1c-7.2 0-12.4-8.3-14.2-11.2-1-1.6-.5-3.8 1.1-4.8s3.8-.5 4.8 1.1c3.4 5.4 6.7 8.3 8.8 7.9 4.2-.9 10.3-14.5 12.9-34.8.2-1.9 2-3.3 3.9-3 1.9.2 3.3 2 3 3.9-.8 6.3-5.4 37.9-18.4 40.7-.5.1-1.2.2-1.9.2zm-25-18.1c-5.5 0-9.4-1.3-11.8-4-5.6-6.3-.1-16.3 1.6-19.5.9-1.7 3.1-2.3 4.7-1.4 1.7.9 2.3 3.1 1.4 4.7-3.1 5.6-4 9.9-2.6 11.5 2.9 3.2 17.7 1.9 36.7-5.7a3.57 3.57 0 0 1 4.6 1.9 3.57 3.57 0 0 1-1.9 4.6c-.3.1-8.6 3.5-17.9 5.8-5.9 1.4-10.8 2.1-14.8 2.1zm16.5-12.6c-.6 0-1.2-.2-1.8-.5-.3-.2-7.9-4.8-15.4-10.8-11-8.9-15.8-16.2-14.6-22.3 1.6-8.2 12.9-9.9 16.6-10.5 1.9-.3 3.7 1 4 2.9s-1 3.7-2.9 4c-6.3.9-10.3 2.8-10.7 4.9-1 4.3 9 15.3 26.6 25.8 1.7 1 2.2 3.1 1.2 4.8-.7 1.1-1.8 1.7-3 1.7z"></path>
+      <circle cx="63.8" cy="60.5" r="8.4"></circle>
+    </g>
+  </svg>
+</button>
+<script>
+  (function() {
+    var bubble = document.getElementById('aitopia-chat-bubble');
+    var launcher = document.getElementById('aitopia-launcher');
+    var closeBtn = document.getElementById('aitopia-chat-close');
+    var header = document.getElementById('aitopia-chat-header');
+
+    function openChat() {
+      if (!bubble) return;
+      bubble.style.display = 'block';
+      var content = document.querySelector('.aitopia-chat-content');
+      if (content) {
+        content.style.display = 'block';
+        content.innerHTML = '<div style="color:#333;">Not functioning yet.</div>';
+      }
+      if (launcher) {
+        launcher.style.display = 'none';
+        launcher.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function closeChat() {
+      if (!bubble) return;
+      bubble.style.display = 'none';
+      if (launcher) {
+        launcher.style.display = 'flex';
+        launcher.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    if (launcher) launcher.addEventListener('click', openChat);
+    if (closeBtn) closeBtn.addEventListener('click', function(e){ e.stopPropagation(); closeChat(); });
+    if (header) header.addEventListener('click', function(e){
+      if (e.target && e.target.id === 'aitopia-chat-close') return;
+      var content = document.querySelector('.aitopia-chat-content');
+      if (content) content.style.display = (content.style.display === 'none') ? 'block' : 'none';
+    });
+    closeChat();
+  })();
+</script>
